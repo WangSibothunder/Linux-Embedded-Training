@@ -1,0 +1,12 @@
+QT += core gui widgets serialport
+CONFIG += c++11 warn_on
+TEMPLATE = app
+TARGET = uart2uart
+SOURCES += src/main.cpp src/mainwindow.cpp src/serialsession.cpp src/bytecodec.cpp
+SOURCES += src/appwindow.cpp src/dualpanel.cpp
+HEADERS += src/mainwindow.h src/serialsession.h src/bytecodec.h
+HEADERS += src/appwindow.h src/dualpanel.h
+INCLUDEPATH += src
+msvc: QMAKE_CXXFLAGS += /utf-8
+target.path = /opt/uart2uart
+INSTALLS += target

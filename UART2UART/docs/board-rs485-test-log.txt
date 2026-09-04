@@ -1,0 +1,21 @@
+VM_WORKING_SOURCE_HASHES
+10d8866180e7c96f9035b273bfeeffdb218187e5815733f1c0046a7425f1b2a9  src/bytecodec.cpp
+5dffea0cea403f0cc0dfbabcf3eec3ccca461aaeb0b2558c01406fd667eda8e7  src/bytecodec.h
+f7535d788150bb49240972571cdb9d76ad5beeffb5af019403f985ad4e2d677e  src/main.cpp
+04c9fe2aee17260e3b41b4fddd64d2909cff7749f9d41017e84a2153c60a6c93  src/mainwindow.cpp
+c2f5c52f1fc851017436011fe4e849ef798f685ac05b70b354af4d5ca0682d8f  src/mainwindow.h
+8e015c92f5683629e0267f57f5ed2c08273c5b61f83a752ca930862f7efb4774  src/serialsession.cpp
+0c4e5a1f7b239475724dbe5a69c962496789dfce6e865a0d494d7b54d98e792f  src/serialsession.h
+15aa47cb5779f399b403e608483b8f19706a42b34073915a5051a0994049d639  UART2UART.pro
+UPLOAD_BOUNDED_RS485_TEST
+PASS round=1 direction=1->2 bytes=63
+PASS round=2 direction=2->1 bytes=63
+PASS round=3 direction=1->2 bytes=319
+PASS round=4 direction=2->1 bytes=319
+PASS round=5 direction=1->2 bytes=319
+PASS round=6 direction=2->1 bytes=319
+PASS round=7 direction=1->2 bytes=319
+PASS round=8 direction=2->1 bytes=319
+PASS round=9 direction=1->2 bytes=319
+PASS round=10 direction=2->1 bytes=320
+ALL_10_TRANSFERS_PASSED

@@ -1,0 +1,32 @@
+# Build products and local IDE settings
+build/
+bin/
+debug/
+release/
+*.pro.user
+*.pro.user.*
+*.autosave
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+Makefile
+Makefile.*
+.qmake.stash
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+.vs/
+.idea/
+
+# Local credentials and temporary files
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*.swp
+*~

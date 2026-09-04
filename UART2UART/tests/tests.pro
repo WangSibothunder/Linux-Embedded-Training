@@ -1,0 +1,12 @@
+QT += core gui widgets serialport testlib
+CONFIG += c++11 console testcase warn_on
+CONFIG -= app_bundle
+TEMPLATE = app
+TARGET = test_uart2uart
+INCLUDEPATH += ../src
+SOURCES += test_uart2uart.cpp ../src/bytecodec.cpp ../src/serialsession.cpp ../src/mainwindow.cpp
+HEADERS += ../src/bytecodec.h ../src/serialsession.h ../src/mainwindow.h
+SOURCES += ../src/dualpanel.cpp ../src/appwindow.cpp
+HEADERS += ../src/dualpanel.h ../src/appwindow.h
+unix:!macx: LIBS += -lutil
+msvc: QMAKE_CXXFLAGS += /utf-8

@@ -1,0 +1,36 @@
+/opt/Qt5.6.2/5.6/gcc_64/bin/moc -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -I/tmp/codex-uart2uart-src-20260903/tests -I/tmp/codex-uart2uart-src-20260903/src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. ../../tests/test_uart2uart.cpp -o test_uart2uart.moc
+g++ -c -pipe -O2 -std=gnu++0x -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I../../tests -I. -I../../src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -o bytecodec.o ../../src/bytecodec.cpp
+g++ -c -pipe -O2 -std=gnu++0x -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I../../tests -I. -I../../src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -o serialsession.o ../../src/serialsession.cpp
+g++ -c -pipe -O2 -std=gnu++0x -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I../../tests -I. -I../../src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -o mainwindow.o ../../src/mainwindow.cpp
+/opt/Qt5.6.2/5.6/gcc_64/bin/moc -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -I/tmp/codex-uart2uart-src-20260903/tests -I/tmp/codex-uart2uart-src-20260903/src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. ../../src/serialsession.h -o moc_serialsession.cpp
+/opt/Qt5.6.2/5.6/gcc_64/bin/moc -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -I/tmp/codex-uart2uart-src-20260903/tests -I/tmp/codex-uart2uart-src-20260903/src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. ../../src/mainwindow.h -o moc_mainwindow.cpp
+g++ -c -pipe -O2 -std=gnu++0x -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I../../tests -I. -I../../src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -o test_uart2uart.o ../../tests/test_uart2uart.cpp
+g++ -c -pipe -O2 -std=gnu++0x -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I../../tests -I. -I../../src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -o moc_serialsession.o moc_serialsession.cpp
+g++ -c -pipe -O2 -std=gnu++0x -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/tmp/codex-uart2uart-src-20260903/build/tests"' -I../../tests -I. -I../../src -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtSerialPort -I/opt/Qt5.6.2/5.6/gcc_64/include/QtTest -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -o moc_mainwindow.o moc_mainwindow.cpp
+g++ -Wl,-O1 -Wl,-rpath,/opt/Qt5.6.2/5.6/gcc_64/lib -o test_uart2uart test_uart2uart.o bytecodec.o serialsession.o mainwindow.o moc_serialsession.o moc_mainwindow.o   -lutil -L/opt/Qt5.6.2/5.6/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5SerialPort -lQt5Test -lQt5Core -lGL -lpthread 
+********* Start testing of UartTests *********
+Config: Using QtTest library 5.6.2, Qt 5.6.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 4.9.1 20140922 (Red Hat 4.9.1-10))
+INFO   : UartTests::initTestCase() entering
+PASS   : UartTests::initTestCase()
+INFO   : UartTests::hexRoundTrip() entering
+PASS   : UartTests::hexRoundTrip()
+INFO   : UartTests::invalidHex() entering
+PASS   : UartTests::invalidHex()
+INFO   : UartTests::lineEndings() entering
+PASS   : UartTests::lineEndings()
+INFO   : UartTests::splitUtf8() entering
+PASS   : UartTests::splitUtf8()
+INFO   : UartTests::unopenedAndInvalidPort() entering
+PASS   : UartTests::unopenedAndInvalidPort()
+INFO   : UartTests::bidirectionalBinary() entering
+PASS   : UartTests::bidirectionalBinary()
+INFO   : UartTests::queueLimitsAndLargeWrite() entering
+PASS   : UartTests::queueLimitsAndLargeWrite()
+INFO   : UartTests::disconnectClosesSession() entering
+PASS   : UartTests::disconnectClosesSession()
+INFO   : UartTests::guiSendReceiveAndControls() entering
+PASS   : UartTests::guiSendReceiveAndControls()
+INFO   : UartTests::cleanupTestCase() entering
+PASS   : UartTests::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted
+********* Finished testing of UartTests *********
