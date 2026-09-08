@@ -1,6 +1,10 @@
 # Build products and local IDE settings
 build/
 bin/
+target/
+logs/
+output/
+mqtt-data/
 debug/
 release/
 *.pro.user
@@ -11,6 +15,10 @@ release/
 *.exe
 *.dll
 *.so
+*.jar
+*.class
+*.ko
+*.dtb
 *.a
 Makefile
 Makefile.*

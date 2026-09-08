@@ -1,0 +1,7 @@
+build/
+*.pro.user
+*.pro.user.*
+*.o
+Makefile
+moc_*.cpp
+.qmake.stash

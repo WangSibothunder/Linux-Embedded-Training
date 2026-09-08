@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>智慧农业监控台</title>
+  <style>
+    :root{color-scheme:dark;--bg:#09120f;--panel:#111f1a;--line:#294036;--text:#eaf7ef;--muted:#96aea1;--green:#55d38b;--amber:#f6bd60;--red:#ff7575}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#153228 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.5 system-ui,"Microsoft YaHei",sans-serif}
+    main{max-width:1120px;margin:auto;padding:32px 22px 60px}header{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:24px}h1{margin:0;font-size:30px}h2{font-size:18px;margin:0 0 14px}.sub,.muted{color:var(--muted)}.pill{padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:#0b1713}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.panel{background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 14px 35px #0004}.summary{grid-column:span 4}.wide{grid-column:span 8}.side{grid-column:span 4}.metric{font-size:34px;font-weight:700;margin:6px 0}.unit{font-size:15px;color:var(--muted)}.status{display:inline-flex;align-items:center;gap:8px}.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 10px currentColor}.online .dot{background:var(--green)}button,select{font:inherit;color:var(--text);background:#15271f;border:1px solid #365445;border-radius:10px;padding:10px 13px}button{cursor:pointer}button:hover{border-color:var(--green)}.actions{display:flex;flex-wrap:wrap;gap:9px}.primary{background:#1d7048;border-color:#369263}.danger{background:#62302e;border-color:#92514d}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}.log{height:178px;overflow:auto;background:#08110d;border-radius:10px;padding:10px;font:13px/1.5 ui-monospace,monospace;color:#b9d2c2}.empty{color:var(--muted);padding:20px 0}.foot{margin-top:18px;color:var(--muted);font-size:13px}@media(max-width:760px){.summary,.wide,.side{grid-column:1/-1}header{align-items:start;flex-direction:column}.metric{font-size:29px}}
+  </style>
+</head>
+<body>
+<main>
+  <header><div><h1>智慧农业监控台</h1><div class="sub">ELF1 · MQTT 实时采集与控制</div></div><div id="server" class="pill status"><i class="dot"></i><span>正在连接事件流</span></div></header>
+  <div class="grid">
+    <section class="panel summary"><div class="muted">温度</div><div class="metric"><span id="temperature">--</span><span class="unit"> °C</span></div></section>
+    <section class="panel summary"><div class="muted">湿度</div><div class="metric"><span id="humidity">--</span><span class="unit"> %RH</span></div></section>
+    <section class="panel summary"><div class="muted">环境光照</div><div class="metric"><span id="light">--</span><span class="unit"> lux</span></div></section>
+    <section class="panel wide">
+      <h2>设备状态</h2>
+      <div class="actions" style="margin-bottom:14px"><select id="device"><option value="">暂无设备</option></select><span id="deviceState" class="pill status"><i class="dot"></i><span>离线</span></span><span id="lastSeen" class="pill">最后上报：--</span></div>
+      <table><thead><tr><th>设备 ID</th><th>状态</th><th>温度</th><th>湿度</th><th>光照</th><th>最后活动</th></tr></thead><tbody id="devices"><tr><td colspan="6" class="empty">等待设备接入…</td></tr></tbody></table>
+    </section>
+    <section class="panel side">
+      <h2>远程控制</h2>
+      <div class="muted" style="margin-bottom:12px">命令经 HTTP → MQTT 下发到选中设备</div>
+      <div class="actions"><button class="primary" onclick="sendDeviceCommand('light',true)">开灯</button><button class="danger" onclick="sendDeviceCommand('light',false)">关灯</button><button class="primary" onclick="sendDeviceCommand('fan',true)">开风扇</button><button class="danger" onclick="sendDeviceCommand('fan',false)">关风扇</button></div>
+      <div class="foot">窗帘硬件本阶段暂不接入；协议仍保留，界面不提供控制按钮。</div>
+    </section>
+    <section class="panel wide"><h2>最近遥测</h2><table><thead><tr><th>时间</th><th>温度</th><th>湿度</th><th>光照</th><th>灯</th><th>风扇</th></tr></thead><tbody id="history"><tr><td colspan="6" class="empty">暂无数据</td></tr></tbody></table></section>
+    <section class="panel side"><h2>运行日志</h2><div id="log" class="log"></div></section>
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id); let selected=''; let source;
+const fmt=v=>v==null?'--':Number(v).toFixed(1); const time=v=>v?new Date(v).toLocaleString():'--';
+function log(s){const d=document.createElement('div');d.textContent=new Date().toLocaleTimeString()+'  '+s;$('log').prepend(d)}
+function renderLatest(t){t=t||{};$('temperature').textContent=fmt(t.temperature);$('humidity').textContent=fmt(t.humidity);$('light').textContent=fmt(t.light)}
+function setSelected(id){selected=id;$('device').value=id; refreshOne(); refreshHistory()}
+function renderDevices(items){
+  const old=selected;$('device').innerHTML=items.length?items.map(x=>`<option value="${x.deviceId}">${x.deviceId}</option>`).join(''):'<option value="">暂无设备</option>';
+  selected=items.some(x=>x.deviceId===old)?old:(items[0]?.deviceId||'');$('device').value=selected;
+  $('devices').innerHTML=items.length?items.map(x=>`<tr><td>${x.deviceId}</td><td>${x.online?'在线':'离线'}</td><td>${fmt(x.latest?.temperature)}</td><td>${fmt(x.latest?.humidity)}</td><td>${fmt(x.latest?.light)}</td><td>${time(x.lastSeen)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">等待设备接入…</td></tr>';
+  const current=items.find(x=>x.deviceId===selected);renderCurrent(current);
+}
+function renderCurrent(x){const el=$('deviceState');el.classList.toggle('online',!!x?.online);el.querySelector('span').textContent=x?.online?'在线':'离线';$('lastSeen').textContent='最后上报：'+time(x?.lastReportAt);renderLatest(x?.latest)}
+async function get(url){const r=await fetch(url);if(!r.ok)throw new Error((await r.json()).error||r.statusText);return r.json()}
+async function refresh(){try{renderDevices(await get('/api/devices'))}catch(e){log('刷新失败：'+e.message)}}
+async function refreshOne(){if(!selected)return renderCurrent(null);try{renderCurrent(await get('/api/devices/'+encodeURIComponent(selected)))}catch(e){log(e.message)}}
+async function refreshHistory(){if(!selected)return;try{const h=await get('/api/devices/'+encodeURIComponent(selected)+'/telemetry?limit=12');$('history').innerHTML=h.length?h.slice().reverse().map(x=>`<tr><td>${time(x.timestamp)}</td><td>${fmt(x.temperature)}</td><td>${fmt(x.humidity)}</td><td>${fmt(x.light)}</td><td>${x.lightOn?'开':'关'}</td><td>${x.fanOn?'开':'关'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">暂无数据</td></tr>'}catch(e){log(e.message)}}
+async function sendDeviceCommand(type,value){if(!selected)return log('请先选择设备');try{const r=await fetch('/api/devices/'+encodeURIComponent(selected)+'/commands',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,value})});const j=await r.json();if(!r.ok)throw new Error(j.error);log(type+' 命令已发布')}catch(e){log('命令失败：'+e.message)}}
+function connectEvents(){source?.close();source=new EventSource('/api/telemetry/stream');source.onopen=()=>{$('server').classList.add('online');$('server').querySelector('span').textContent='实时事件已连接'};source.onerror=()=>{$('server').classList.remove('online');$('server').querySelector('span').textContent='事件流重连中'};source.addEventListener('telemetry',e=>{if(e.lastEventId===selected){renderLatest(JSON.parse(e.data));refreshHistory()}refresh()});source.addEventListener('device-status',()=>refresh())}
+$('device').addEventListener('change',e=>setSelected(e.target.value));refresh().then(refreshHistory);connectEvents();setInterval(refresh,10000);
+</script>
+</body></html>
