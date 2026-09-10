@@ -65,6 +65,9 @@ public class DeviceStore {
             record.online = true;
             record.lastSeen = now;
             record.lastReportAt = now;
+            // Use the server clock so history remains trustworthy even when an
+            // embedded board has no RTC or has not completed time sync yet.
+            telemetry.setTimestamp(now);
             record.latest = telemetry;
             record.history.addLast(telemetry);
             while (record.history.size() > historyLimit) record.history.removeFirst();

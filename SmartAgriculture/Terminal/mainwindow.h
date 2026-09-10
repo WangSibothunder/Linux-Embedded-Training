@@ -16,6 +16,7 @@ class MqttClient;
 class SensorWorker;
 class SysfsController;
 class CanChannel;
+class SensorTrendWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -80,9 +81,12 @@ private:
     QLabel *m_mqttLabel;
     QLabel *m_deviceLabel;
     QLabel *m_outputLabel;
+    QLabel *m_sampleTimeLabel;
+    QLabel *m_sourceLabel;
     QComboBox *m_fanLevel;
     QPushButton *m_lightButton;
     QPlainTextEdit *m_log;
+    SensorTrendWidget *m_trendWidget;
     SerialWidgets m_serial1;
     SerialWidgets m_serial2;
     CanWidgets m_can0;

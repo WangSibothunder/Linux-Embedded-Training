@@ -3,54 +3,278 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>智慧农业监控台</title>
+  <meta name="theme-color" content="#08120f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1b16'/%3E%3Cpath d='M16 39c17 1 27-8 33-24 4 18-3 34-21 36-8 1-13-4-12-12Z' fill='%235ce693'/%3E%3Cpath d='M20 46c8-10 16-17 27-24' stroke='%23eef8f2' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>智慧农业 · 实时监控中心</title>
   <style>
-    :root{color-scheme:dark;--bg:#09120f;--panel:#111f1a;--line:#294036;--text:#eaf7ef;--muted:#96aea1;--green:#55d38b;--amber:#f6bd60;--red:#ff7575}
-    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#153228 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.5 system-ui,"Microsoft YaHei",sans-serif}
-    main{max-width:1120px;margin:auto;padding:32px 22px 60px}header{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:24px}h1{margin:0;font-size:30px}h2{font-size:18px;margin:0 0 14px}.sub,.muted{color:var(--muted)}.pill{padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:#0b1713}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.panel{background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 14px 35px #0004}.summary{grid-column:span 4}.wide{grid-column:span 8}.side{grid-column:span 4}.metric{font-size:34px;font-weight:700;margin:6px 0}.unit{font-size:15px;color:var(--muted)}.status{display:inline-flex;align-items:center;gap:8px}.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 10px currentColor}.online .dot{background:var(--green)}button,select{font:inherit;color:var(--text);background:#15271f;border:1px solid #365445;border-radius:10px;padding:10px 13px}button{cursor:pointer}button:hover{border-color:var(--green)}.actions{display:flex;flex-wrap:wrap;gap:9px}.primary{background:#1d7048;border-color:#369263}.danger{background:#62302e;border-color:#92514d}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}.log{height:178px;overflow:auto;background:#08110d;border-radius:10px;padding:10px;font:13px/1.5 ui-monospace,monospace;color:#b9d2c2}.empty{color:var(--muted);padding:20px 0}.foot{margin-top:18px;color:var(--muted);font-size:13px}@media(max-width:760px){.summary,.wide,.side{grid-column:1/-1}header{align-items:start;flex-direction:column}.metric{font-size:29px}}
+    :root {
+      color-scheme: dark;
+      --bg: #07110e; --surface: #0d1b16; --line: #1f3b2f; --line-soft: #172e25;
+      --text: #eef8f2; --muted: #89a498; --green: #5ce693; --cyan: #63d5ff;
+      --amber: #ffbb6b; --red: #ff7b7b; --shadow: 0 22px 60px rgba(0, 0, 0, .28);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--text);
+      background: radial-gradient(circle at 12% -10%, rgba(38,140,89,.20), transparent 34rem),
+                  radial-gradient(circle at 88% 0, rgba(36,125,141,.12), transparent 28rem), var(--bg);
+      font: 15px/1.55 Inter, "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    button, select { font: inherit; }
+    button:focus-visible, select:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+    .shell { max-width: 1440px; margin: 0 auto; padding: 24px; }
+    .topbar { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+    .brand { display: flex; align-items: center; gap: 13px; min-width: 280px; }
+    .brand-mark {
+      display: grid; place-items: center; width: 45px; height: 45px; border-radius: 14px;
+      color: #07110e; background: var(--green); box-shadow: 0 0 28px rgba(92,230,147,.25);
+    }
+    .brand-mark svg { width: 25px; height: 25px; }
+    .eyebrow { color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .15em; }
+    h1 { margin: 1px 0 0; font-size: clamp(20px,2.5vw,28px); line-height: 1.2; letter-spacing: -.02em; }
+    h2 { margin: 0; font-size: 16px; }
+    .top-meta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .clock { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 11px;
+      border: 1px solid var(--line); border-radius: 999px; background: rgba(13,27,22,.88);
+      color: var(--muted); white-space: nowrap;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px rgba(255,123,123,.10); }
+    .online .dot { background: var(--green); box-shadow: 0 0 0 4px rgba(92,230,147,.10); }
+    .online { color: #bff8d4; }
+    .metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+    .metric {
+      --accent: var(--green); position: relative; min-height: 142px; padding: 17px 18px; overflow: hidden;
+      border: 1px solid var(--line); border-radius: 17px; background: linear-gradient(145deg,#10231b,#0b1814);
+    }
+    .metric::after { content: ""; position: absolute; right: -35px; bottom: -45px; width: 105px; height: 105px; border-radius: 50%; background: var(--accent); opacity: .07; }
+    .metric-label { color: var(--muted); font-size: 13px; }
+    .metric-value { margin-top: 14px; font-size: clamp(28px,3.2vw,42px); font-weight: 760; line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+    .unit { margin-left: 5px; color: var(--muted); font-size: 13px; font-weight: 500; letter-spacing: 0; }
+    .metric-foot { margin-top: 14px; color: var(--muted); font-size: 12px; }
+    .temperature { --accent: var(--amber); } .temperature .metric-value { color: #ffd09b; }
+    .humidity { --accent: var(--cyan); } .humidity .metric-value { color: #a6e7ff; }
+    .light { --accent: var(--green); } .light .metric-value { color: #aff5c8; }
+    .devices { --accent: #c8a6ff; } .devices .metric-value { color: #ddc9ff; }
+    .layout { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 16px; }
+    .main-column, .side-column { display: grid; gap: 16px; align-content: start; }
+    .panel { border: 1px solid var(--line); border-radius: 18px; background: rgba(13,27,22,.93); box-shadow: var(--shadow); overflow: hidden; }
+    .panel-head { display: flex; align-items: center; gap: 12px; padding: 17px 18px; border-bottom: 1px solid var(--line-soft); }
+    .panel-head .support { color: var(--muted); font-size: 13px; margin-left: auto; }
+    .chart-wrap { padding: 16px 18px 18px; }
+    #trendChart { display: block; width: 100%; height: 240px; }
+    .chart-grid { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+    .trend-line { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+    .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+    .legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; margin: 0 7px 3px 0; border-radius: 9px; background: currentColor; }
+    .temperature-color { color: var(--amber); } .humidity-color { color: var(--cyan); } .light-color { color: var(--green); }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+    select, button { min-height: 39px; border: 1px solid #315243; border-radius: 10px; color: var(--text); background: #142a21; padding: 8px 12px; }
+    select { min-width: 170px; }
+    button { cursor: pointer; transition: transform .15s ease,border-color .15s ease,background .15s ease; }
+    button:hover { transform: translateY(-1px); border-color: var(--green); background: #19382a; }
+    button:disabled { cursor: not-allowed; opacity: .45; transform: none; }
+    .primary { background: #185a39; border-color: #2d8f5b; } .danger { background: #4b2926; border-color: #77433f; }
+    .control-body { padding: 16px 18px 18px; }
+    .control-group + .control-group { margin-top: 18px; padding-top: 17px; border-top: 1px solid var(--line-soft); }
+    .control-label { margin-bottom: 9px; color: var(--muted); font-size: 13px; }
+    .button-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .notice { margin-top: 13px; color: var(--muted); font-size: 12px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); text-align: left; white-space: nowrap; }
+    th { color: var(--muted); font-size: 12px; font-weight: 650; letter-spacing: .04em; }
+    td { font-variant-numeric: tabular-nums; }
+    tbody tr { cursor: pointer; transition: background .15s ease; }
+    tbody tr:hover, tbody tr.selected { background: #122b21; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .state { display: inline-flex; align-items: center; gap: 7px; }
+    .state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+    .state.is-online::before { background: var(--green); }
+    .empty { color: var(--muted); padding: 30px 16px; text-align: center; cursor: default; }
+    .log { height: 220px; overflow: auto; padding: 13px 15px; background: #07110e; color: #aac1b6; font: 12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .log-entry { padding: 4px 0; border-bottom: 1px dashed rgba(49,82,67,.42); }
+    .log-time { color: #597a6b; margin-right: 8px; }
+    .error-banner { display: none; margin-bottom: 14px; padding: 11px 14px; border: 1px solid #78423e; border-radius: 12px; background: #3b2421; color: #ffc1bb; }
+    .error-banner.show { display: block; }
+    .footer { padding: 18px 4px 4px; color: #5f796d; font-size: 12px; text-align: right; }
+    @media (max-width: 1050px) { .layout { grid-template-columns: 1fr; } .side-column { grid-template-columns: 1fr 1fr; } .metrics { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 680px) {
+      .shell { padding: 14px; } .topbar { align-items: flex-start; } .clock { display: none; } .top-meta { margin-left: auto; }
+      .brand { min-width: 0; } .metrics, .side-column { grid-template-columns: 1fr; } .metric { min-height: 125px; }
+      .panel-head { align-items: flex-start; flex-direction: column; } .panel-head .support { margin-left: 0; } #trendChart { height: 190px; }
+    }
   </style>
 </head>
 <body>
-<main>
-  <header><div><h1>智慧农业监控台</h1><div class="sub">ELF1 · MQTT 实时采集与控制</div></div><div id="server" class="pill status"><i class="dot"></i><span>正在连接事件流</span></div></header>
-  <div class="grid">
-    <section class="panel summary"><div class="muted">温度</div><div class="metric"><span id="temperature">--</span><span class="unit"> °C</span></div></section>
-    <section class="panel summary"><div class="muted">湿度</div><div class="metric"><span id="humidity">--</span><span class="unit"> %RH</span></div></section>
-    <section class="panel summary"><div class="muted">环境光照</div><div class="metric"><span id="light">--</span><span class="unit"> lux</span></div></section>
-    <section class="panel wide">
-      <h2>设备状态</h2>
-      <div class="actions" style="margin-bottom:14px"><select id="device"><option value="">暂无设备</option></select><span id="deviceState" class="pill status"><i class="dot"></i><span>离线</span></span><span id="lastSeen" class="pill">最后上报：--</span></div>
-      <table><thead><tr><th>设备 ID</th><th>状态</th><th>温度</th><th>湿度</th><th>光照</th><th>最后活动</th></tr></thead><tbody id="devices"><tr><td colspan="6" class="empty">等待设备接入…</td></tr></tbody></table>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21V9"/><path d="M12 13C7 13 4.5 10.5 4 6c4.7 0 7.3 2.1 8 6Z"/><path d="M12 16c5 0 7.5-2.5 8-7-4.7 0-7.3 2.1-8 6Z"/></svg></div>
+        <div><div class="eyebrow">FIELD OPERATIONS</div><h1>智慧农业监控中心</h1></div>
+      </div>
+      <div class="top-meta"><span id="clock" class="clock">--:--:--</span><div id="server" class="pill"><i class="dot"></i><span>事件流连接中</span></div></div>
+    </header>
+    <div id="errorBanner" class="error-banner" role="alert"></div>
+    <section class="metrics" aria-label="实时环境数据">
+      <article class="metric temperature"><div class="metric-label">空气温度</div><div class="metric-value"><span id="temperature">--</span><span class="unit">°C</span></div><div class="metric-foot" id="temperatureFoot">等待 AHT20 数据</div></article>
+      <article class="metric humidity"><div class="metric-label">相对湿度</div><div class="metric-value"><span id="humidity">--</span><span class="unit">%RH</span></div><div class="metric-foot" id="humidityFoot">等待 AHT20 数据</div></article>
+      <article class="metric light"><div class="metric-label">环境光照</div><div class="metric-value"><span id="light">--</span><span class="unit">lux</span></div><div class="metric-foot" id="lightFoot">等待 BH1726 数据</div></article>
+      <article class="metric devices"><div class="metric-label">在线设备</div><div class="metric-value"><span id="onlineCount">0</span><span class="unit">台</span></div><div class="metric-foot" id="deviceCountFoot">尚未发现终端</div></article>
     </section>
-    <section class="panel side">
-      <h2>远程控制</h2>
-      <div class="muted" style="margin-bottom:12px">命令经 HTTP → MQTT 下发到选中设备</div>
-      <div class="actions"><button class="primary" onclick="sendDeviceCommand('light',true)">开灯</button><button class="danger" onclick="sendDeviceCommand('light',false)">关灯</button><button class="primary" onclick="sendDeviceCommand('fan',true)">开风扇</button><button class="danger" onclick="sendDeviceCommand('fan',false)">关风扇</button></div>
-      <div class="foot">窗帘硬件本阶段暂不接入；协议仍保留，界面不提供控制按钮。</div>
-    </section>
-    <section class="panel wide"><h2>最近遥测</h2><table><thead><tr><th>时间</th><th>温度</th><th>湿度</th><th>光照</th><th>灯</th><th>风扇</th></tr></thead><tbody id="history"><tr><td colspan="6" class="empty">暂无数据</td></tr></tbody></table></section>
-    <section class="panel side"><h2>运行日志</h2><div id="log" class="log"></div></section>
-  </div>
-</main>
-<script>
-const $=id=>document.getElementById(id); let selected=''; let source;
-const fmt=v=>v==null?'--':Number(v).toFixed(1); const time=v=>v?new Date(v).toLocaleString():'--';
-function log(s){const d=document.createElement('div');d.textContent=new Date().toLocaleTimeString()+'  '+s;$('log').prepend(d)}
-function renderLatest(t){t=t||{};$('temperature').textContent=fmt(t.temperature);$('humidity').textContent=fmt(t.humidity);$('light').textContent=fmt(t.light)}
-function setSelected(id){selected=id;$('device').value=id; refreshOne(); refreshHistory()}
-function renderDevices(items){
-  const old=selected;$('device').innerHTML=items.length?items.map(x=>`<option value="${x.deviceId}">${x.deviceId}</option>`).join(''):'<option value="">暂无设备</option>';
-  selected=items.some(x=>x.deviceId===old)?old:(items[0]?.deviceId||'');$('device').value=selected;
-  $('devices').innerHTML=items.length?items.map(x=>`<tr><td>${x.deviceId}</td><td>${x.online?'在线':'离线'}</td><td>${fmt(x.latest?.temperature)}</td><td>${fmt(x.latest?.humidity)}</td><td>${fmt(x.latest?.light)}</td><td>${time(x.lastSeen)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">等待设备接入…</td></tr>';
-  const current=items.find(x=>x.deviceId===selected);renderCurrent(current);
-}
-function renderCurrent(x){const el=$('deviceState');el.classList.toggle('online',!!x?.online);el.querySelector('span').textContent=x?.online?'在线':'离线';$('lastSeen').textContent='最后上报：'+time(x?.lastReportAt);renderLatest(x?.latest)}
-async function get(url){const r=await fetch(url);if(!r.ok)throw new Error((await r.json()).error||r.statusText);return r.json()}
-async function refresh(){try{renderDevices(await get('/api/devices'))}catch(e){log('刷新失败：'+e.message)}}
-async function refreshOne(){if(!selected)return renderCurrent(null);try{renderCurrent(await get('/api/devices/'+encodeURIComponent(selected)))}catch(e){log(e.message)}}
-async function refreshHistory(){if(!selected)return;try{const h=await get('/api/devices/'+encodeURIComponent(selected)+'/telemetry?limit=12');$('history').innerHTML=h.length?h.slice().reverse().map(x=>`<tr><td>${time(x.timestamp)}</td><td>${fmt(x.temperature)}</td><td>${fmt(x.humidity)}</td><td>${fmt(x.light)}</td><td>${x.lightOn?'开':'关'}</td><td>${x.fanOn?'开':'关'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">暂无数据</td></tr>'}catch(e){log(e.message)}}
-async function sendDeviceCommand(type,value){if(!selected)return log('请先选择设备');try{const r=await fetch('/api/devices/'+encodeURIComponent(selected)+'/commands',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,value})});const j=await r.json();if(!r.ok)throw new Error(j.error);log(type+' 命令已发布')}catch(e){log('命令失败：'+e.message)}}
-function connectEvents(){source?.close();source=new EventSource('/api/telemetry/stream');source.onopen=()=>{$('server').classList.add('online');$('server').querySelector('span').textContent='实时事件已连接'};source.onerror=()=>{$('server').classList.remove('online');$('server').querySelector('span').textContent='事件流重连中'};source.addEventListener('telemetry',e=>{if(e.lastEventId===selected){renderLatest(JSON.parse(e.data));refreshHistory()}refresh()});source.addEventListener('device-status',()=>refresh())}
-$('device').addEventListener('change',e=>setSelected(e.target.value));refresh().then(refreshHistory);connectEvents();setInterval(refresh,10000);
-</script>
-</body></html>
+    <div class="layout" style="margin-top:16px">
+      <div class="main-column">
+        <section class="panel">
+          <div class="panel-head"><h2>实时变化趋势</h2><span id="freshness" class="support">等待第一组遥测</span></div>
+          <div class="chart-wrap">
+            <svg id="trendChart" viewBox="0 0 900 240" preserveAspectRatio="none" role="img" aria-label="温度、湿度和光照实时趋势图">
+              <g class="chart-grid"><line x1="0" y1="20" x2="900" y2="20"/><line x1="0" y1="87" x2="900" y2="87"/><line x1="0" y1="154" x2="900" y2="154"/><line x1="0" y1="220" x2="900" y2="220"/></g>
+              <path id="temperaturePath" class="trend-line" stroke="#ffbb6b" d=""/><path id="humidityPath" class="trend-line" stroke="#63d5ff" d=""/><path id="lightPath" class="trend-line" stroke="#5ce693" d=""/>
+            </svg>
+            <div class="legend"><span class="temperature-color">温度</span><span class="humidity-color">湿度</span><span class="light-color">光照</span></div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>终端设备</h2><div class="toolbar" style="margin-left:auto"><select id="device" aria-label="选择设备"><option value="">暂无设备</option></select><span id="deviceState" class="pill"><i class="dot"></i><span>离线</span></span></div></div>
+          <div class="table-wrap"><table><thead><tr><th>设备 ID</th><th>连接状态</th><th>温度</th><th>湿度</th><th>光照</th><th>最后上报</th></tr></thead><tbody id="devices"><tr><td colspan="6" class="empty">等待设备接入…</td></tr></tbody></table></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>最近遥测</h2><span class="support">最近 12 条</span></div>
+          <div class="table-wrap"><table><thead><tr><th>采集时间</th><th>温度</th><th>湿度</th><th>光照</th><th>LED1</th><th>风扇</th></tr></thead><tbody id="history"><tr><td colspan="6" class="empty">暂无数据</td></tr></tbody></table></div>
+        </section>
+      </div>
+      <aside class="side-column">
+        <section class="panel">
+          <div class="panel-head"><h2>远程控制</h2></div>
+          <div class="control-body">
+            <div class="control-group"><div class="control-label">LED1 补光</div><div class="button-row"><button class="primary command" data-type="light" data-value="true">开启</button><button class="danger command" data-type="light" data-value="false">关闭</button></div></div>
+            <div class="control-group"><div class="control-label">PWM 风扇</div><div class="button-row"><button class="primary command" data-type="fan" data-value="true">开启</button><button class="danger command" data-type="fan" data-value="false">关闭</button></div></div>
+            <div class="notice">命令经 HTTP → MQTT 下发至当前选中的 ELF1。窗帘硬件本阶段暂不接入。</div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>运行日志</h2><button id="clearLog" style="margin-left:auto;min-height:30px;padding:4px 9px">清空</button></div>
+          <div id="log" class="log" aria-live="polite"></div>
+        </section>
+      </aside>
+    </div>
+    <footer class="footer">ELF1 · Spring Boot / MQTT / SSE 实时链路</footer>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id);
+    const state = { selected: '', source: null, devices: [], history: [] };
+    const fmt = value => value == null || Number.isNaN(Number(value)) ? '--' : Number(value).toFixed(1);
+    const time = value => value ? new Date(value).toLocaleString('zh-CN', { hour12: false }) : '--';
+    const escapeHtml = value => String(value == null ? '' : value).replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
+    function log(message) {
+      const line = document.createElement('div'); line.className = 'log-entry';
+      const stamp = document.createElement('span'); stamp.className = 'log-time'; stamp.textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+      line.append(stamp, document.createTextNode(message)); $('log').prepend(line);
+      while ($('log').children.length > 80) $('log').lastElementChild.remove();
+    }
+    function showError(message) { $('errorBanner').textContent = message; $('errorBanner').classList.add('show'); }
+    function clearError() { $('errorBanner').classList.remove('show'); }
+    function setCommandsEnabled(enabled) { document.querySelectorAll('.command').forEach(button => button.disabled = !enabled); }
+    function renderLatest(telemetry) {
+      const t = telemetry || {};
+      $('temperature').textContent = fmt(t.temperature); $('humidity').textContent = fmt(t.humidity); $('light').textContent = fmt(t.light);
+      $('temperatureFoot').textContent = t.temperature == null ? '等待 AHT20 数据' : 'AHT20 · 实时采集';
+      $('humidityFoot').textContent = t.humidity == null ? '等待 AHT20 数据' : 'AHT20 · 实时采集';
+      $('lightFoot').textContent = t.light == null ? '等待 BH1726 数据' : 'BH1726 · 实时采集';
+    }
+    function renderCurrent(device) {
+      const pill = $('deviceState'); pill.classList.toggle('online', !!(device && device.online));
+      pill.querySelector('span').textContent = device && device.online ? '在线' : '离线';
+      $('freshness').textContent = device && device.lastReportAt ? '最近上报 ' + time(device.lastReportAt) : '等待第一组遥测';
+      renderLatest(device && device.latest); setCommandsEnabled(!!device);
+    }
+    function setSelected(deviceId) {
+      state.selected = deviceId; $('device').value = deviceId;
+      renderCurrent(state.devices.find(item => item.deviceId === deviceId)); refreshHistory();
+    }
+    function renderDevices(items) {
+      state.devices = Array.isArray(items) ? items : [];
+      const previous = state.selected;
+      state.selected = state.devices.some(item => item.deviceId === previous) ? previous : (state.devices.length ? state.devices[0].deviceId : '');
+      $('device').innerHTML = state.devices.length ? state.devices.map(item => '<option value="' + escapeHtml(item.deviceId) + '">' + escapeHtml(item.deviceId) + '</option>').join('') : '<option value="">暂无设备</option>';
+      $('device').value = state.selected;
+      const online = state.devices.filter(item => item.online).length; $('onlineCount').textContent = online;
+      $('deviceCountFoot').textContent = state.devices.length ? '共 ' + state.devices.length + ' 台已登记终端' : '尚未发现终端';
+      $('devices').innerHTML = state.devices.length ? state.devices.map(item =>
+        '<tr data-device="' + escapeHtml(item.deviceId) + '" class="' + (item.deviceId === state.selected ? 'selected' : '') + '">' +
+        '<td>' + escapeHtml(item.deviceId) + '</td><td><span class="state ' + (item.online ? 'is-online' : '') + '">' + (item.online ? '在线' : '离线') + '</span></td>' +
+        '<td>' + fmt(item.latest && item.latest.temperature) + ' °C</td><td>' + fmt(item.latest && item.latest.humidity) + ' %</td><td>' + fmt(item.latest && item.latest.light) + ' lux</td><td>' + time(item.lastReportAt || item.lastSeen) + '</td></tr>'
+      ).join('') : '<tr><td colspan="6" class="empty">等待设备接入…</td></tr>';
+      renderCurrent(state.devices.find(item => item.deviceId === state.selected));
+    }
+    function pathFor(values, minimum, maximum) {
+      if (!values.length || maximum <= minimum) return '';
+      let started = false;
+      return values.map((value, index) => {
+        const number = Number(value);
+        if (!Number.isFinite(number)) { started = false; return ''; }
+        const x = values.length === 1 ? 0 : index * 900 / (values.length - 1);
+        const ratio = Math.max(0, Math.min(1, (number - minimum) / (maximum - minimum))); const y = 220 - ratio * 200;
+        const command = started ? 'L' : 'M'; started = true; return command + x.toFixed(1) + ',' + y.toFixed(1);
+      }).filter(Boolean).join(' ');
+    }
+    function renderChart(history) {
+      const values = history.slice(-30); const lightValues = values.map(item => item.light);
+      const finiteLights = lightValues.map(Number).filter(Number.isFinite);
+      const lightMaximum = Math.max(1000, finiteLights.length ? Math.max.apply(null, finiteLights) * 1.15 : 1000);
+      $('temperaturePath').setAttribute('d', pathFor(values.map(item => item.temperature), -10, 50));
+      $('humidityPath').setAttribute('d', pathFor(values.map(item => item.humidity), 0, 100));
+      $('lightPath').setAttribute('d', pathFor(lightValues, 0, lightMaximum));
+    }
+    function renderHistory(history) {
+      state.history = Array.isArray(history) ? history : []; renderChart(state.history);
+      $('history').innerHTML = state.history.length ? state.history.slice().reverse().slice(0, 12).map(item =>
+        '<tr><td>' + time(item.timestamp) + '</td><td>' + fmt(item.temperature) + ' °C</td><td>' + fmt(item.humidity) + ' %</td><td>' + fmt(item.light) + ' lux</td><td>' + (item.lightOn ? '开启' : '关闭') + '</td><td>' + (item.fanOn ? '开启' : '关闭') + '</td></tr>'
+      ).join('') : '<tr><td colspan="6" class="empty">暂无遥测数据</td></tr>';
+    }
+    async function get(url) {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) { let message = response.statusText; try { message = (await response.json()).error || message; } catch (_) {} throw new Error(message); }
+      return response.json();
+    }
+    async function refresh() {
+      try { renderDevices(await get('/api/devices')); clearError(); }
+      catch (error) { showError('无法读取设备状态：' + error.message); log('设备刷新失败：' + error.message); }
+    }
+    async function refreshHistory() {
+      if (!state.selected) { renderHistory([]); return; }
+      try { renderHistory(await get('/api/devices/' + encodeURIComponent(state.selected) + '/telemetry?limit=30')); }
+      catch (error) { log('遥测刷新失败：' + error.message); }
+    }
+    async function sendDeviceCommand(type, value) {
+      if (!state.selected) { log('请先选择一个终端设备'); return; }
+      setCommandsEnabled(false);
+      try {
+        const response = await fetch('/api/devices/' + encodeURIComponent(state.selected) + '/commands', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: type, value: value }) });
+        const result = await response.json(); if (!response.ok) throw new Error(result.error || response.statusText);
+        log((type === 'light' ? 'LED1' : '风扇') + (value ? '开启' : '关闭') + '命令已发布');
+      } catch (error) { log('命令下发失败：' + error.message); }
+      finally { setCommandsEnabled(!!state.selected); }
+    }
+    function connectEvents() {
+      if (state.source) state.source.close();
+      state.source = new EventSource('/api/telemetry/stream');
+      state.source.onopen = () => { $('server').classList.add('online'); $('server').querySelector('span').textContent = '实时链路已连接'; log('SSE 实时事件流已连接'); };
+      state.source.onerror = () => { $('server').classList.remove('online'); $('server').querySelector('span').textContent = '事件流重连中'; };
+      state.source.addEventListener('telemetry', event => {
+        const payload = JSON.parse(event.data);
+        if (event.lastEventId === state.selected) { renderLatest(payload); refreshHistory(); }
+        refresh();
+      });
+      state.source.addEventListener('device-status', () => refresh());
+    }
+    $('device').addEventListener('change', event => setSelected(event.target.value));
+    $('devices').addEventListener('click', event => { const row = event.target.closest('tr[data-device]'); if (row) setSelected(row.dataset.device); });
+    document.querySelectorAll('.command').forEach(button => button.addEventListener('click', () => sendDeviceCommand(button.dataset.type, button.dataset.value === 'true')));
+    $('clearLog').addEventListener('click', () => { $('log').textContent = ''; });
+    setInterval(() => { $('clock').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false }); }, 1000);
+    setCommandsEnabled(false); refresh().then(refreshHistory); connectEvents(); setInterval(refresh, 10000);
+  </script>
+</body>
+</html>
